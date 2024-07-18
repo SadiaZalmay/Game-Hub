@@ -3,28 +3,37 @@ import useGames from "../hooks/useGames";
 import GameCard from "./GameCard";
 import GameCardSkeleton from "./GameCardSkeleton";
 import GameCardContainer from "./GameCardContainer";
+import { Genre } from "../hooks/useGenres";
 
-const GameGrid = () =>{
-    const {data, error, isLoading} = useGames();
-    const Skeletons = [1,2,3,4,5,6];
-    
-    return(
-        <>
-        {error && <Text>{error}</Text>}
-        <SimpleGrid 
-            columns={{ sm: 1, md:2, lg:3, xl: 3}} 
-            padding={10} 
-            spacing={3}
-        >
-        {isLoading && Skeletons.map(Skeletons =><GameCardContainer> <GameCardSkeleton key={Skeletons}/></GameCardContainer>)}
-        {data.map((game) => (
-            <GameCardContainer>
-                <GameCard key={game.id} game={game}></GameCard>
-            </GameCardContainer>
-        ))}  
-        </SimpleGrid>
-        </>
-    );
+interface Props {
+  selectedGenre: Genre | null;
 }
+const GameGrid = ({ selectedGenre }: Props) => {
+  const { data, error, isLoading } = useGames(selectedGenre);
+  const Skeletons = [1, 2, 3, 4, 5, 6];
 
-export default GameGrid
+  return (
+    <>
+      {error && <Text>{error}</Text>}
+      <SimpleGrid
+        columns={{ sm: 1, md: 2, lg: 3, xl: 3 }}
+        padding={10}
+        spacing={3}
+      >
+        {isLoading &&
+          Skeletons.map((Skeletons) => (
+            <GameCardContainer key={Skeletons}>
+              <GameCardSkeleton />
+            </GameCardContainer>
+          ))}
+        {data.map((game) => (
+          <GameCardContainer key={game.id}>
+            <GameCard game={game}></GameCard>
+          </GameCardContainer>
+        ))}
+      </SimpleGrid>
+    </>
+  );
+};
+
+export default GameGrid;

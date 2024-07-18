@@ -1,33 +1,41 @@
 import { useEffect, useState } from "react";
 import apiClient from "../services/api-client";
+import { AxiosRequestConfig } from "axios";
 
-interface FetchResponse<T>{
-    count: number;
-    results: T[]; //T is generic type parameter
+interface FetchResponse<T> {
+  count: number;
+  results: T[]; //T is generic type parameter
 }
-const useData = <T>(endpoint:string) =>{
-    const [data, setData] = useState<T[]>([]);
-        const [error, setError] = useState('');
-        const [isLoading, setLoading] = useState(false);
-    
-        useEffect(() => {
-            const controller = new AbortController();
-        setLoading(true);
-        apiClient
-            .get<FetchResponse<T>>(endpoint)
-            .then((res) => {
-                setData(res.data.results)
-                setLoading(false);
-            })
-            
-            .catch((err) => {
-                setError(err.message)
-                setLoading(false);
-            });
+const useData = <T>(
+  endpoint: string,
+  requestConfig?: AxiosRequestConfig,
+  deps?: any[]
+) => {
+  const [data, setData] = useState<T[]>([]);
+  const [error, setError] = useState("");
+  const [isLoading, setLoading] = useState(false);
 
-        return () => controller.abort();
-        }, []);
-        return{data, error, isLoading};
+  useEffect(
+    () => {
+      const controller = new AbortController();
+      setLoading(true);
+      apiClient
+        .get<FetchResponse<T>>(endpoint, { ...requestConfig })
+        .then((res) => {
+          setData(res.data.results);
+          setLoading(false);
+        })
+
+        .catch((err) => {
+          setError(err.message);
+          setLoading(false);
+        });
+
+      return () => controller.abort();
+    },
+    deps ? [...deps] : []
+  );
+  return { data, error, isLoading };
 };
 
 export default useData;

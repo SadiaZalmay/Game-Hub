@@ -1,19 +1,24 @@
 import useData from "./useData";
+import { Genre } from "./useGenres";
 
-export interface Platform{
-    id: number;
-    name: string;
-    slug: string;
+export interface Platform {
+  id: number;
+  name: string;
+  slug: string;
 }
 
-export interface Game{
-    id: number;
-    name:string;
-    background_image: string;
-    parent_platforms: {
-        map: any;platform: Platform
-}
+export interface Game {
+  id: number;
+  name: string;
+  background_image: string;
+  parent_platforms: {
+    map: any;
+    platform: Platform;
+  };
 }
 
-const useGames = () => useData<Game>('/games')
+const useGames = (selectedGenre: Genre | null) =>
+  useData<Game>("/games", { params: { genre: selectedGenre?.id } }, [
+    selectedGenre?.id,
+  ]);
 export default useGames;
