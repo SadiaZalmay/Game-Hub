@@ -14,7 +14,7 @@ const GameGrid = () =>{
         <SimpleGrid 
             columns={{ sm: 1, md:2, lg:3, xl: 3}} 
             padding={10} 
-            spacing={20}
+            spacing={3}
         >
         {isLoading && Skeletons.map(Skeletons =><GameCardContainer> <GameCardSkeleton key={Skeletons}/></GameCardContainer>)}
         {data.map((game) => (
