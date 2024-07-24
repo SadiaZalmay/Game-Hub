@@ -10,7 +10,7 @@ Advanced Search & Filtering: Find games based on criteria like genre and popular
 To get started with Game-Hub, follow these steps:
 
 1. Clone the Repository
-git clone https://github.com/yourusername/game-hub.git
+git clone https://github.com/SadiaZalmay/Game-Hub
 
 2. Navigate to the Project Directory
 cd game-hub
